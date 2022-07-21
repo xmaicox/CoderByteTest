@@ -48,10 +48,10 @@ namespace CoderByteTest.Controllers
             catch (Exception ex)
             {
                 _Logger.LogError(ex.Message);
-                return StatusCode(500);
+                return StatusCode(422, ex.Message);
             }
 
-            return new JsonResult(articleNameResults);
+            return Ok(articleNameResults);
         }
     }
 }
