@@ -23,7 +23,7 @@ namespace CoderByteTest.ApiRepository
             _Cache = _cache;
         }
 
-        public async Task<List<Article>> GetArticles(int limit = 0)
+        public async Task<List<Article>> GetArticles()
         {
             List<Article> articles = null;
             try
