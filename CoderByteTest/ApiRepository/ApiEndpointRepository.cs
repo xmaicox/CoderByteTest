@@ -1,4 +1,5 @@
 ﻿using CoderByteTest.Model;
+using CoderByteTest.ModelHelper;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -41,7 +42,7 @@ namespace CoderByteTest.ApiRepository
                     {
                         responseBody = JsonConvert.DeserializeObject<dynamic>(await response.Content.ReadAsStringAsync());
                         string data = JsonConvert.SerializeObject(responseBody.data);
-                        articles.AddRange(JsonConvert.DeserializeObject<IEnumerable<Article>>(data, new TimeConverter()));
+                        articles.AddRange(JsonConvert.DeserializeObject<IEnumerable<Article>>(data, new MicrosecondEpochConverter()));
 
                         if (responseBody.total_pages.ToObject<int>() > 1)
                         {
@@ -54,7 +55,7 @@ namespace CoderByteTest.ApiRepository
                                 {
                                     responseBody = JsonConvert.DeserializeObject<dynamic>(await response.Content.ReadAsStringAsync());
                                     data = JsonConvert.SerializeObject(responseBody.data);
-                                    articles.AddRange(JsonConvert.DeserializeObject<IEnumerable<Article>>(data, new TimeConverter()));
+                                    articles.AddRange(JsonConvert.DeserializeObject<IEnumerable<Article>>(data, new MicrosecondEpochConverter()));
                                 }
                             }
                         }
@@ -73,25 +74,6 @@ namespace CoderByteTest.ApiRepository
             }
 
             return articles;
-        }
-    }
-
-    public class TimeConverter : Newtonsoft.Json.JsonConverter
-    {
-        public override bool CanConvert(Type objectType)
-        {
-            return objectType == typeof(DateTime);
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            var t = long.Parse((string)reader.Value);
-            return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(t);
-        }
-
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            throw new NotImplementedException();
         }
     }
 }
