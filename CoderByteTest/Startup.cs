@@ -32,6 +32,7 @@ namespace CoderByteTest
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }

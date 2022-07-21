@@ -26,8 +26,8 @@ namespace CoderByteTest.Controllers
 
         [HttpGet]
         [Route("")]
-        [Route("/{limit:int}")]
-        [Route("/topArticles/{limit:int}")]
+        [Route("/{limit:int?}")]
+        [Route("/topArticles/{limit:int?}")]
         public async Task<IActionResult> Index(int limit = 0)
         {
             object articleNameResults;
